@@ -1,0 +1,15 @@
+name: CheckSubmission
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  TestSubmission:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: test_submission
+      run: |
+        echo "Successfully pushed changes to online repo! :-)"
