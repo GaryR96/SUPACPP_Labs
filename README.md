@@ -11,7 +11,7 @@ Welcome to the 2025 SUPA C++ course. As with previous years we are providing a r
     - Click [here](https://github.com/login) to login or sign up
 2) A fork of this repository
     - Click [here](https://github.com/GaryR96/SUPACPP_Labs/fork) or on the button shown below:
-![](./assets/fork.pdf)
+![](./assets/fork.png)
 
 ## Starting the codespace
 
