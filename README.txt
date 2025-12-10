@@ -1,41 +1,51 @@
-AnalyseData is a C++ program designed to read TWO-COLUMN numerical data, perform common analysis
-tasks, and store the results in output files. 
-It, also, supports both space-separated and comma-separated input formats, making it suitable
-for datasets exported from spreadsheets, simulations or measurements devices. 
+This repository contains a complete solution for the second SUPAC++ assignment:
 
-As for the structure of the files here we have 3 code files:
-AnalyseData.cxx is the main program, 
-CustomFunctions.h is the Header which is doing the declarations
-CustonFucntions.cxx is doing the implementations. 
+- Use the provided `FiniteFunctions` base class to explore finite functions or use the one that I have already made. 
+- Add new distributions (`Normal`, `Cauchy–Lorentz`, `Crystal Ball`) via inheritance.
+- Use the Metropolis algorithm to sample from the distribution you believe generated the data in `MysteryDataXXXXX.txt`.
 
-To run everything, just compile the AnalyseData and the other two files feeding it whatever
-needs to be feeded. 
+## Files
 
-Upon starting the program, you are prompted to provide a data filemname:
-Then you are gonna see a menu of choice you can choose from:
+### Core classes
 
-1. Print N lines
-	Prints the first N data points
-	Saves all data to output_printN.txt
-2. Compute magnitudes
-	Computes sqrt(x^2+y^2) for each point
-	Prints values
-	Saves them to output_magnitudes.txt
-3. Perform least–squares fit and chi^2/NDOF
-	Computes slope p and intercept q
-	Reads error values from error2D_float.txt
-	Computes x^2/NDOF
-	Saves results to output_fit.txt
-4. Compute x^y (recursive)
-	Rounds each y to the nearest integer
-	Computes x raised to that power using a recursive algorithm
-	Saves output to output_xpowy.txt 
+- `FiniteFunctions.h` – declaration of the base class `FiniteFunctions`.
+- `FiniteFunctions.cxx` – implementation of `FiniteFunctions`:
+  - default function `f(x) = 1 / (1 + x^2)`,
+  - numerical integration on a finite interval,
+  - automatic normalisation,
+  - file output for plotting,
+  - Metropolis sampler usable by all derived classes.
 
-Notes for Developers
-	Input parsing is robust: commas are automatically converted to spaces.
-	All numerical operations use double or long double precision.
-	The code is modular, with all calculations encapsulated in CustomFunctions.cxx.
+- `Distributions.h` – declarations of:
+  - `NormalFunction` (Gaussian),
+  - `CauchyLorentzFunction`,
+  - `CrystalBallFunction`.
 
+- `Distributions.cxx` – implementations of the three distributions using the formulas from the assignment.
 
+### Main analysis program
 
+- `main.cxx` – executable that:
+  1. Reads the mystery data from `Output/Data/MysteryDataXXXXX.txt`.
+  2. Computes the range, mean and standard deviation of the data.
+  3. Chooses sensible limits `[xmin, xmax]` (data range with a margin).
+  4. Constructs:
+     - the default `FiniteFunctions` object,
+     - `NormalFunction`,
+     - `CauchyLorentzFunction`,
+     - `CrystalBallFunction`.
+  5. Prints the integral and normalisation factor for each function.
+  6. Writes normalised function values to:
+     - `default_function.dat`,
+     - `normal_function.dat`,
+     - `cauchy_function.dat`,
+     - `crystalball_function.dat`.
+  7. Copies the input data to `mystery_data.dat` for easy plotting.
+  8. Uses the Metropolis algorithm (implemented in `FiniteFunctions`) to:
+     - sample new points from the **Crystal Ball** distribution (the chosen model),
+     - write them to `metropolis_samples.dat`.
 
+#############################################################################################################
+
+Also, because it seemed better to me, I've made a new 'main' that contains everything, all in one, 
+and if you compile it, it generates and runs everything that needs to be generated. Try it if you want!!!
