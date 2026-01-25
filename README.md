@@ -18,6 +18,8 @@ No extra arguments will output a root file with empty branches for uncalculated 
 
 Requires cmake install to make and requires root for tree production format 
 
+Now removed ROOT requirements in output so use .csv in instances where before it would be root in --out
+
 # SUPA C++
 Lab exercises and development environment for SUPA C++ course, winter 2025
 
