@@ -3,6 +3,8 @@
     i.e the data and the errors together, and outputs to a root file as thats what
 	i'll be using in analysis, so good practice for me (rather than 3 random txt files)!
 	GR - 12/11/2025
+
+	Now outputs to a csv due to new reqirements 
 */
 
 
@@ -16,9 +18,10 @@
 #include <stdio.h>
 #include <vector>
 #include <fstream>
-#include "TFile.h"
-#include "TTree.h"
+//#include "TFile.h"
+//#include "TTree.h"
 #include "CustomFunctions.h"
+#include <iomanip>
 
 struct Data_Row {
     double x;
@@ -45,9 +48,12 @@ class FileHandler{
     //Variables
 
     // ROOT things
-    TFile* outFile;
-    TTree* dataTree;
+//    TFile* outFile;
+//    TTree* dataTree;
 
+	//csv output now
+	std::ofstream csvFile;
+	
     // Control bools
     bool isConnected;
     bool isVerbose;
@@ -76,15 +82,18 @@ class FileHandler{
 		chi_calculated  = false;
     }
     ~FileHandler(){
-        dataTree->Write();
-        outFile->Close();
+    //    dataTree->Write();
+    //    outFile->Close();
+		if (csvFile.is_open()){
+			csvFile.close();
+		}
     }
 
     void MakeOutputFile(char* outputFileName);
    // void OpenStream(char* dataPath);
     ReadResults  ReadAllFiles(const std::string& dataPath, int nPrintRows, double p, double q);
     void FillTree(double x, double y, double xerr, double yerr, double xPowy, double Mag);
-    void ConnectToTree();
+//    void ConnectToTree();
     void SetVerbose(   		 bool in = true ){ isVerbose	  = in; }
     void SetChi2( 			 bool in = true ){ chi2			  = in; }
 	void SetXtoY( 			 bool in = true ){ XtoY			  = in; }
@@ -95,12 +104,16 @@ class FileHandler{
 
 // Make output file
 void FileHandler::MakeOutputFile(char* outputFileName){
-    outFile    = new TFile(outputFileName, "RECREATE");
-    dataTree   = new TTree("dataTree", "Data and error file txt file format");
+	csvFile.open(outputFileName);
+	//csv headrer
+	csvFile << "x,y,xerr,yerr,xPowy,Mag\n";
+	
+    //outFile    = new TFile(outputFileName, "RECREATE");
+    //dataTree   = new TTree("dataTree", "Data and error file txt file format");
     outputMade = true;
 }
 
-
+/*
 // Connect a TTree branches to a internal data
 void FileHandler::ConnectToTree(){
     dataTree->Branch("x", &row.x);
@@ -112,11 +125,11 @@ void FileHandler::ConnectToTree(){
 
     isConnected = true;
 }
-
+*/
 
 // Fill the tree
 void FileHandler::FillTree(double x, double y, double xerr, double yerr, double xPowy, double Mag){
-	//printf("filling tree with row!");
+/*	//printf("filling tree with row!");
 	// Copy data to struct
     row.x     = x;
     row.y     = y;
@@ -127,6 +140,14 @@ void FileHandler::FillTree(double x, double y, double xerr, double yerr, double 
     // If not connected then connect then fill, otherwise fill
     if(!isConnected) ConnectToTree();
     dataTree->Fill();
+}*/
+	csvFile << std::fixed << std::setprecision(6)
+			<< x		  << ","
+			<< y		  << ","
+			<< xerr		  << ","
+			<< yerr		  << ","
+			<< xPowy	  << ","
+			<< Mag		  << "\n";
 }
 
 ReadResults FileHandler::ReadAllFiles(const std::string& dataPath, int nPrintRows, double p, double q) {

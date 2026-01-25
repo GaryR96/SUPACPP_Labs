@@ -65,14 +65,15 @@ int main(int argc, char* argv[]){
     }
 		
 	if(outName == NULL && !fh.chi2 && !fh.XtoY && !fh.Mag){
-		outName = (char *) "New.root";
+		outName = (char *) "New.csv";
 	}
 	if(outName == NULL && (fh.chi2 || fh.XtoY || fh.Mag)){
 		static char NameAdd[256] = "New";
         if(fh.chi2) strcat(NameAdd, "Chi2");
         if(fh.XtoY) strcat(NameAdd, "x^y");
 		if(fh.Mag)  strcat(NameAdd, "Mag");
-        strcat(NameAdd, ".root");
+       	//strcat(NameAdd, ".root");
+       	strcat(NameAdd, ".csv");
         outName = NameAdd;
 		
 	}
@@ -90,6 +91,8 @@ int main(int argc, char* argv[]){
 		printf("More prints than rows, will only print first 5, Loop B\n");
 		printNo = 5;
 		ReadResults resultsChi = fh.ReadAllFiles(inputDir, printNo, p, q);
+	}else{
+		ReadResults resultsChi = fh.ReadAllFiles(inputDir, printNo, p, q);
 	}
 
     // If chi2 flag is set, recalc with chi_calculated = true
@@ -98,7 +101,15 @@ int main(int argc, char* argv[]){
         printf("chi_calculated now true - Loop C\n");
 		PQ param =  CalcPQ(results.nRows, results.sumXY, results.sumX, results.sumY, results.sumX2, results.sumY2); 
        	printf("For y = px+n LS fit:\n p = %.6f,\n q = %.6f,\n", param.p, param.q); 
-        ReadResults resultsChi = fh.ReadAllFiles(inputDir, printNo, param.p, param.q);
+
+		if (results.nRows < printNo){
+			printf("More prints than rows, will only print first 5, Loop B\n");
+			printNo = 5;
+    		ReadResults resultsChi = fh.ReadAllFiles(inputDir, printNo, param.p, param.q);
+		}else{		
+    		ReadResults resultsChi = fh.ReadAllFiles(inputDir, printNo, param.p, param.q);
+		}
+		
     }
     
 	return 0;	
