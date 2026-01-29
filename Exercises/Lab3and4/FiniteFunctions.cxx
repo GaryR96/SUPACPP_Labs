@@ -3,10 +3,12 @@
 #include <vector>
 #include "FiniteFunctions.h"
 #include <filesystem> //To check extensions in a nice way
-
+#include <fstream>
 #include "gnuplot-iostream.h" //Needed to produce plots (not part of the course) 
 
 using std::filesystem::path;
+
+
 
 //Empty constructor
 FiniteFunction::FiniteFunction(){
@@ -61,10 +63,34 @@ double FiniteFunction::callFunction(double x) {return this->invxsquared(x);}; //
 Integration by hand (output needed to normalise function when plotting)
 ###################
 */ 
-double FiniteFunction::integrate(int Ndiv){ //private
+double FiniteFunction::integrate(int Ndiv){
+    
+    double h = (m_RMax - m_RMin) / (double)Ndiv;
+    double sum = 0.0;
+
+    double x_i = m_RMin;
+
+    for(int i = 0; i < Ndiv; ++i) {
+        double x_ip1 = x_i + h;
+        double f_i   = callFunction(x_i);
+        double f_ip1 = callFunction(x_ip1);
+
+        // trapezoid area: h * (f(x_i) + f(x_{i+1})) / 2
+        sum += 0.5 * h * (f_i + f_ip1);
+
+        x_i = x_ip1;
+    }
+
+    return sum;
+}
+
+
+
+/*double FiniteFunction::integrate(int Ndiv){ //private
   //ToDo write an integrator
   return -99;  
 }
+*/
 double FiniteFunction::integral(int Ndiv) { //public
   if (Ndiv <= 0){
     std::cout << "Invalid number of divisions for integral, setting Ndiv to 1000" <<std::endl;
@@ -107,7 +133,7 @@ void FiniteFunction::printInfo(){
 
 //Hack because gnuplot-io can't read in custom functions, just scan over function and connect points with a line... 
 void FiniteFunction::plotFunction(){
-  m_function_scan = this->scanFunction(10000);
+  m_function_scan = this->scanFunction(100);
   m_plotfunction = true;
 }
 
@@ -122,6 +148,7 @@ void FiniteFunction::plotData(std::vector<double> &points, int Nbins, bool isdat
     m_samples = this->makeHist(points,Nbins);
     m_plotsamplepoints = true;
   }
+
 }
 
 
