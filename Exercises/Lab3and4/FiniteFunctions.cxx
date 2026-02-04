@@ -6,7 +6,8 @@
 #include <vector>
 #include "FiniteFunctions.h"
 #include <filesystem> //To check extensions in a nice way
-#include "TRandom3.h" // use root random generator 
+//#include "TRandom3.h" // use root random generator 
+#include <random>
 #include <algorithm>
 #include <cmath>
 #include "gnuplot-iostream.h" //Needed to produce plots (not part of the course) 
@@ -169,7 +170,17 @@ std::vector<double> FiniteFunction::metropolisSample(int Nsamples, double width)
     samples.reserve(Nsamples);
 
 
-	TRandom3 randGen(0); // Seed 0 = random based on time
+//	TRandom3 randGen(0); // Seed 0 = random based on time
+	std::random_device rd;
+	std::mt19937 gen(rd());
+
+    // Distributions
+	std::uniform_real_distribution<double> uniform01(0.0, 1.0);
+	std::uniform_real_distribution<double> uniformRange(m_RMin, m_RMax);
+	std::normal_distribution<double> gaussian(0.0, width);
+
+    // Initial random point in range
+    double x = uniformRange(gen);
 
     // random point in range
     double x = randGen.Uniform(m_RMin, m_RMax);
