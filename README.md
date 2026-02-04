@@ -1,4 +1,7 @@
 # Running My Code:
+
+See NoRootBrach for the version with no ROOT requirements
+
 Makefile should include all executables, so simply cmake and  make before running. Then run with ./HelloWorld and follow any terminal instructions
 
 For Data Analysis Script, to run, executable is AnalyseData 
@@ -17,6 +20,8 @@ Will print all the data in the example file, prints chi2 calculation, and output
 No extra arguments will output a root file with empty branches for uncalculated data
 
 Requires cmake install to make and requires root for tree production format 
+
+Now removed ROOT requirements in output so use .csv in instances where before it would be root in --out
 
 # SUPA C++
 Lab exercises and development environment for SUPA C++ course, winter 2025
