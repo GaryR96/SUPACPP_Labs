@@ -1,5 +1,5 @@
 # SUPA C++
-Lab exercises and development environment for SUPA C++ course, winter 2025
+Lab exercises and development environment for the SUPA C++ course
 
 ## Getting started
 
