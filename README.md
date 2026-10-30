@@ -3,7 +3,7 @@ Lab exercises and development environment for SUPA C++ course, winter 2025
 
 ## Getting started
 
-Welcome to the 2025 SUPA C++ course. As with previous years, the easiest way to develop the code in this course is to use a ready-made development environment utilising [github codespaces](https://github.com/features/codespaces) which makes things run more smoothly and reduces the setup steps needed.
+Welcome to the SUPA C++ course. As with previous years, the easiest way to develop the code in this course is to use a ready-made development environment utilising [github codespaces](https://github.com/features/codespaces) which makes things run more smoothly and reduces the setup steps needed.
 
 ## Github codespaces
 With your personal github account you should automatically get 60 core-hours of free codespace usage per month, which should easily be enough for this course. If you go over your allowance it may be possible to extend it for free by registering a student github account but I haven't been able to verify this for obvious reasons.
