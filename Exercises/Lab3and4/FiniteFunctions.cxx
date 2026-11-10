@@ -181,7 +181,10 @@ std::vector< std::pair<double,double> > FiniteFunction::makeHist(std::vector<dou
 //If an m_plot... flag is set, the we must have filled the related data vector
 //SUPACPP note: They syntax of the plotting code is not part of the course
 void FiniteFunction::generatePlot(Gnuplot &gp){
+  
+  std::filesystem::create_directories("Outputs/png");
 
+  gp << "set output 'Outputs/png/" << m_FunctionName << ".png'\n";
   if (m_plotfunction==true && m_plotdatapoints==true && m_plotsamplepoints==true){
     gp << "set terminal pngcairo\n";
     gp << "set output 'Outputs/png/"<<m_FunctionName<<".png'\n"; 
